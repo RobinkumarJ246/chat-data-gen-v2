@@ -9,6 +9,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
   const router = useRouter();
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading state to true
 
     try {
       const response = await axios.post('https://cdg-server-v2.onrender.com/api/login', { email, password });
@@ -43,6 +45,8 @@ const SignIn = () => {
         console.error('Login error:', err);
         alert('Login failed. Please try again later.');
       }
+    } finally {
+      setIsLoading(false); // Set loading state back to false
     }
   };
 
@@ -73,8 +77,12 @@ const SignIn = () => {
               className="w-full p-2 border rounded-md"
             />
           </div>
-          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
-            Sign In
+          <button 
+            type="submit" 
+            className={`w-full p-2 rounded-md transition duration-300 ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+            disabled={isLoading} // Disable button when loading
+          >
+            {isLoading ? 'Signing you in...' : 'Sign In'}
           </button>
         </form>
         <Link href="/" className="block text-center mt-4 text-gray-600 hover:text-gray-700 transition duration-300">

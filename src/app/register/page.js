@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
@@ -12,8 +12,21 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [success, setSuccess] = useState(null); // New state for success message
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is logged in from local storage
+    const loggedInStatus = localStorage.getItem('isLoggedIn');
+    if (loggedInStatus === 'true') {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,14 +34,28 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
+    setError(null);
+    setSuccess(null); // Reset success state
+  
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('Password must be at least 8 characters long and contain at least one uppercase letter and one number.');
+      setIsLoading(false);
+      return;
+    }
+  
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      setIsLoading(false);
+      return;
+    }
+  
     try {
-      const response = await axios.post('https://chat-data-gen-server.onrender.com/api/register', formData);
-
+      const response = await axios.post('https://cdg-server-v2.onrender.com/api/register', formData);
+  
       if (response.status === 200) {
-        console.log(response.data.message);
-
-        const emailResponse = await axios.post('https://chat-data-gen-server.onrender.com/api/welcome-mail', {
+        const emailResponse = await axios.post('https://cdg-server-v2.onrender.com/api/welcome-mail', {
           toEmail: formData.email,
           subject: 'Account creation success',
           htmlContent: `
@@ -48,6 +75,13 @@ const Register = () => {
                   <p>Hello ${formData.userName},</p>
                   <p>Welcome to ChatDataGen! We're excited to have you on board.</p>
                   <p>This webapp is created to help data scientists and AI model engineers to craft conversational datasets using simpler steps.</p>
+                  <p><ul>
+                  <li>Create/Join a room</li>
+                  <li>Have casual coversations crafting it for your dataset in any language</li>
+                  <li>Download the dataset in desired format in seconds</li>
+                  </ul>
+                  </p>
+                  <p>Its way more simpler than you think to make one</p>
                   <p>The platform is still in beta development and can have bugs and errors, so please let us know your valuable feedback and suggestions that will greatly improve our solution.</p>
                   <p>We thank you once again for joining us in the early stage</p>
               </section>
@@ -59,32 +93,46 @@ const Register = () => {
           </html>
           `,
         });
-
-        console.log(emailResponse.data.message);
-
-        console.log('Logged in');
-        router.push('/');
+  
+        setSuccess('Registration successful. Redirecting to home page...');
+        setIsLoggedIn(true); // Set isLoggedIn to true here
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('email', formData.email); // Update local storage
+        setTimeout(() => {
+          router.push('/verify_email');
+        }, 3000); // Redirect to home page after 3 seconds
       } else {
-        // Registration failed
         alert(response.data.error || 'Registration is failed. Please try again later.');
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        // Registration failed due to existing email
         alert('Email already exists. Please login instead.');
       } else {
-        // Other errors
         console.error('Registration error:', err);
         alert('Registration failed. Please try again later.');
       }
+    } finally {
+      setIsLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
         <h1 className="text-center text-2xl font-bold mb-4">Register your account</h1>
         <form onSubmit={handleSubmit}>
+          {error && (
+            <div className="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-2" role="alert">
+              <p>{error}</p>
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-2" role="alert">
+              <p>{success}</p>
+            </div>
+          )}
+
           <div className="mb-4">
             <label htmlFor="email" className="block font-semibold text-gray-600">Email</label>
             <input
@@ -137,8 +185,12 @@ const Register = () => {
             />
           </div>
 
-          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
-            Register
+          <button 
+            type="submit" 
+            className={`w-full p-2 rounded-md transition duration-300 ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Registering...' : 'Register'}
           </button>
         </form>
         <Link href="/" className="block text-center mt-4 text-gray-600 hover:text-gray-700 transition duration-300">

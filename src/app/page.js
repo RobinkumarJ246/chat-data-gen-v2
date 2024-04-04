@@ -64,14 +64,12 @@ const Home = () => {
             <span className="text-2xl">&#128228;</span>
             <span className="ml-2">Manage Data</span>
           </div>
-          <Link href="/profile" className="flex items-center text-white">
-            <span className="text-2xl">&#9881;</span>
-            <span className="ml-2">Profile</span>
-          </Link>
-          <Link href = "/about" className="flex items-center text-white">
-            <span className="text-2xl">&#9432;</span>
-            <span className="ml-2">About</span>
-          </Link>
+          {isLoggedIn && (
+            <Link href="/profile" className="flex items-center text-white">
+              <span className="text-2xl">&#9881;</span>
+              <span className="ml-2">Profile</span>
+            </Link>
+          )}
           {!isLoggedIn ? (
             <>
               <Link href="/register" className="flex items-center text-white">
@@ -88,7 +86,13 @@ const Home = () => {
               <span className="text-2xl">&#128682;</span>
               <span className="ml-2">Logout</span>
             </Link>
-          )}
+            
+          )
+          }
+          <Link href = "/about" className="flex items-center text-white">
+            <span className="text-2xl">&#9432;</span>
+            <span className="ml-2">About us</span>
+          </Link>
         </div>
       </div>
       <main className="flex-1 p-4">
