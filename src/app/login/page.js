@@ -25,7 +25,7 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://cdg-server-vercel.vercel.app/api/login', { email, password });
+      const response = await axios.post('https://cdg-server-v2.onrender.com/api/login', { email, password });
 
       if (response.status === 200) {
         console.log(response.data.message);
