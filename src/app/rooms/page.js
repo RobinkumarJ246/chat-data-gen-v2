@@ -45,6 +45,11 @@ const Rooms = () => {
           </button>
         </Link>
         </div>
+        <Link href= "/" className="flex justify-center mb-4 md:mb-0 md:mr-4 mt-4">
+          <button className="bg-gray-800 text-white px-6 py-2 rounded-md hover:bg-gray-700 transition duration-300">
+            Back to home
+          </button>
+        </Link>
       </div>
     </div>
   );
