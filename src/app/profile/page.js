@@ -2,8 +2,9 @@
 
 'use client'
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'
 
 const Profile = () => {
   const router = useRouter();
@@ -12,18 +13,31 @@ const Profile = () => {
     router.push('/');
   };
 
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    // Get the username from localStorage or default to empty string
+    const storedUsername = localStorage.getItem('username');
+    setUsername(storedUsername || 'CDG USER');
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-4xl px-4 py-8">
         {/* Profile Picture and User Information */}
         <div className="bg-white p-6 rounded-md shadow-md flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
-          <img 
-            src="./src/assets/avatar.jpg"
-            alt="Profile" 
-            className="w-32 h-32 rounded-full object-cover mb-4 md:mb-0"
-          />
+          <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-blue-500">
+            <Image
+              src="/avatar.jpg"
+              layout="fill"
+              objectFit="cover"
+              alt="Profile Picture"
+              priority
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 60vw"
+            />
+          </div>
           <div className="flex flex-col items-center md:items-start space-y-2">
-            <h2 className="text-xl font-semibold">CDG User</h2>
+            <h2 className="text-xl font-semibold">{username}</h2>
             <p className="text-gray-600">No subscription</p>
             <div className="flex space-x-4 mt-4">
               <button 

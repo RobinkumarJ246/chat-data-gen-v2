@@ -15,11 +15,10 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [success, setSuccess] = useState(null); // New state for success message
+  const [success, setSuccess] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user is logged in from local storage
     const loggedInStatus = localStorage.getItem('isLoggedIn');
     if (loggedInStatus === 'true') {
       setIsLoggedIn(true);
@@ -32,11 +31,57 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const sendWelcomeEmail = async () => {
+    try {
+      const emailResponse = await axios.post('https://cdg-server-v2.onrender.com/api/welcome-mail', {
+        toEmail: formData.email,
+        subject: 'Account creation success',
+        htmlContent: `
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Welcome to ChatDataGen</title>
+          </head>
+          <body style="font-family: Arial, sans-serif;">
+            <!-- Header -->
+            <header style="background-color: #f0f0f0; padding: 20px;">
+                <h1 style="margin: 0; color: #333;">Welcome to ChatDataGen</h1>
+            </header>
+            <!-- Content -->
+            <section style="padding: 20px;">
+                <p>Hello ${formData.userName},</p>
+                <p>Welcome to ChatDataGen! We're excited to have you on board.</p>
+                <p>This webapp is created to help data scientists and AI model engineers to craft conversational datasets using simpler steps.</p>
+                <p><ul>
+                <li>Create/Join a room</li>
+                <li>Have casual coversations crafting it for your dataset in any language</li>
+                <li>Download the dataset in desired format in seconds</li>
+                </ul>
+                </p>
+                <p>Its way more simpler than you think to make one</p>
+                <p>The platform is still in beta development and can have bugs and errors, so please let us know your valuable feedback and suggestions that will greatly improve our solution.</p>
+                <p>We thank you once again for joining us in the early stage</p>
+            </section>
+            <!-- Footer -->
+            <footer style="background-color: #f0f0f0; padding: 20px; text-align: center;">
+                <p style="margin: 0;">Best regards,<br> Innovatexcel team</p>
+            </footer>
+          </body>
+        </html>
+        `,
+      });
+    } catch (err) {
+      console.error('Email sending error:', err);
+      alert('Failed to send welcome email. Please try again later.');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    setSuccess(null); // Reset success state
+    setSuccess(null);
   
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(formData.password)) {
@@ -55,52 +100,17 @@ const Register = () => {
       const response = await axios.post('https://cdg-server-v2.onrender.com/api/register', formData);
   
       if (response.status === 200) {
-        const emailResponse = await axios.post('https://cdg-server-v2.onrender.com/api/welcome-mail', {
-          toEmail: formData.email,
-          subject: 'Account creation success',
-          htmlContent: `
-            <head>
-              <meta charset="UTF-8">
-              <meta http-equiv="X-UA-Compatible" content="IE=edge">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Welcome to ChatDataGen</title>
-            </head>
-            <body style="font-family: Arial, sans-serif;">
-              <!-- Header -->
-              <header style="background-color: #f0f0f0; padding: 20px;">
-                  <h1 style="margin: 0; color: #333;">Welcome to ChatDataGen</h1>
-              </header>
-              <!-- Content -->
-              <section style="padding: 20px;">
-                  <p>Hello ${formData.userName},</p>
-                  <p>Welcome to ChatDataGen! We're excited to have you on board.</p>
-                  <p>This webapp is created to help data scientists and AI model engineers to craft conversational datasets using simpler steps.</p>
-                  <p><ul>
-                  <li>Create/Join a room</li>
-                  <li>Have casual coversations crafting it for your dataset in any language</li>
-                  <li>Download the dataset in desired format in seconds</li>
-                  </ul>
-                  </p>
-                  <p>Its way more simpler than you think to make one</p>
-                  <p>The platform is still in beta development and can have bugs and errors, so please let us know your valuable feedback and suggestions that will greatly improve our solution.</p>
-                  <p>We thank you once again for joining us in the early stage</p>
-              </section>
-              <!-- Footer -->
-              <footer style="background-color: #f0f0f0; padding: 20px; text-align: center;">
-                  <p style="margin: 0;">Best regards,<br> Innovatexcel team</p>
-              </footer>
-            </body>
-          </html>
-          `,
-        });
-  
-        setSuccess('Registration successful. Redirecting to home page...');
-        setIsLoggedIn(true); // Set isLoggedIn to true here
+        setSuccess('Registration successful. Redirecting for verification...');
+        setIsLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('email', formData.email); // Update local storage
+        localStorage.setItem('userName', formData.userName);
+        localStorage.setItem('email', formData.email);
+        
+        await sendWelcomeEmail();  // Sending welcome email
+        
         setTimeout(() => {
           router.push('/verify_email');
-        }, 3000); // Redirect to home page after 3 seconds
+        }, 3000);
       } else {
         alert(response.data.error || 'Registration is failed. Please try again later.');
       }

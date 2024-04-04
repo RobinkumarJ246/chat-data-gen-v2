@@ -8,45 +8,53 @@ import Link from 'next/link';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // New state for loading
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user is logged in from local storage
     const loggedInStatus = localStorage.getItem('isLoggedIn');
     if (loggedInStatus === 'true') {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
+      router.push('/');
     }
   }, []);
 
+  const fetchUsername = async (email) => {
+    try {
+      const response = await axios.get(`https://cdg-server-v2.onrender.com/api/getUsername/${email}`);
+      return response.data.username;
+    } catch (err) {
+      console.error('Fetch username error:', err);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true);
+    setError(null);
 
     try {
       const response = await axios.post('https://cdg-server-v2.onrender.com/api/login', { email, password });
 
       if (response.status === 200) {
-        console.log(response.data.message);
-        console.log('Logged in');
-        setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true'); // Update local storage
+        const userName = await fetchUsername(email);
+        localStorage.setItem('isLoggedIn', 'true');
+        //localStorage.setItem('userName', userName);
+        localStorage.setItem('email', email);
         router.push('/');
       } else {
-        alert(response.data.error || 'Login failed. Please try again later.');
+        setError(response.data.error || 'Login failed. Please try again later.');
       }
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        alert('Invalid email or password');
+        setError('Invalid email or password');
       } else {
         console.error('Login error:', err);
-        alert('Login failed. Please try again later.');
+        setError('Login failed. Please try again later.');
       }
     } finally {
-      setIsLoading(false); // Set loading state back to false
+      setIsLoading(false);
     }
   };
 
@@ -55,6 +63,12 @@ const SignIn = () => {
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
         <h1 className="text-center text-2xl font-bold mb-4">Login to your account</h1>
         <form onSubmit={handleSubmit}>
+          {error && (
+            <div className="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-2" role="alert">
+              <p>{error}</p>
+            </div>
+          )}
+
           <div className="mb-4">
             <label htmlFor="email" className="block font-semibold text-gray-600">Email</label>
             <input
@@ -66,6 +80,7 @@ const SignIn = () => {
               className="w-full p-2 border rounded-md"
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="password" className="block font-semibold text-gray-600">Password</label>
             <input
@@ -77,10 +92,11 @@ const SignIn = () => {
               className="w-full p-2 border rounded-md"
             />
           </div>
+
           <button 
             type="submit" 
             className={`w-full p-2 rounded-md transition duration-300 ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-            disabled={isLoading} // Disable button when loading
+            disabled={isLoading}
           >
             {isLoading ? 'Signing you in...' : 'Sign In'}
           </button>
