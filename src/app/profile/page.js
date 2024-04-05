@@ -18,6 +18,8 @@ const Profile = () => {
   useEffect(() => {
     // Get the username from localStorage or default to empty string
     const storedUsername = localStorage.getItem('username');
+    console.log(localStorage.getItem('username'))
+    console.log(localStorage.getItem('email'))
     setUsername(storedUsername || 'CDG USER');
   }, []);
 

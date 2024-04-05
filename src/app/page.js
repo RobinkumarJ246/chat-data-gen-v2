@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 
 const Home = () => {
   const router = useRouter();
+  const [email, setEmail] = useState('');
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 

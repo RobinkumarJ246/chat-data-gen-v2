@@ -28,12 +28,12 @@ const Rooms = () => {
         <h1 className="text-4xl font-bold">{headerText}</h1>
       </div>
       <div className="flex flex-col md:flex-row">
-        <Link href="/create-room" className="flex justify-center mb-4 md:mb-0 md:mr-4 mt-4">
+        <Link href="/create_room" className="flex justify-center mb-4 md:mb-0 md:mr-4 mt-4">
           <button className="bg-gray-800 text-white px-6 py-2 rounded-md hover:bg-gray-700 transition duration-300">
             Create a Room
           </button>
         </Link>
-        <Link href= "/join-room" className="flex justify-center mb-4 md:mb-0 md:mr-4 mt-4">
+        <Link href= "/join_room" className="flex justify-center mb-4 md:mb-0 md:mr-4 mt-4">
           <button className="bg-gray-800 text-white px-6 py-2 rounded-md hover:bg-gray-700 transition duration-300">
             Join a Room
           </button>
