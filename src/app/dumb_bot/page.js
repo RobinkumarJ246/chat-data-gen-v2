@@ -7,6 +7,7 @@ const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationPairs, setConversationPairs] = useState([]);
 
   const botResponses = [
     'This is a just simulated response from user2',
@@ -60,26 +61,41 @@ const ChatInterface = () => {
     e.preventDefault();
     if (userInput.trim() !== '') {
       const newUser1Message = { sender: 'user1', message: userInput.trim() };
-      const newMessages = [...messages, newUser1Message];
-      setMessages(newMessages);
-  
-      setUserInput('');
-  
+      const updatedMessages = [...messages, newUser1Message];
+      setMessages(updatedMessages);
+
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
-  
+
         const randomResponseIndex = Math.floor(Math.random() * botResponses.length);
         const randomResponse = botResponses[randomResponseIndex];
-  
+
         const newUser2Message = { sender: 'user2', message: randomResponse };
-        const updatedMessages = [...newMessages, newUser2Message];
-        setMessages(updatedMessages);
-  
+
+        const updatedMessagesWithBotResponse = [...updatedMessages, newUser2Message];
+        setMessages(updatedMessagesWithBotResponse);
+
         const conversationPair = [newUser1Message, newUser2Message];
+        const updatedConversationPairs = [...conversationPairs, conversationPair];
+        setConversationPairs(updatedConversationPairs);
+
         console.log('Conversation pair:', conversationPair);
       }, 3000);
+
+      setUserInput('');
     }
+  };
+
+  const handleDownloadJson = () => {
+    const jsonContent = JSON.stringify(conversationPairs, null, 2);
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'chat-data-gen-dumb-bot-conversation-test.json';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleNavigateToRooms = () => {
@@ -93,8 +109,8 @@ const ChatInterface = () => {
           <h2 className="text-center text-xl md:text-2xl">Chat with Dumb bot (Testing portal)</h2>
         </div>
         <div className="bg-white p-4 rounded-b-md flex flex-col space-y-2 overflow-y-auto max-h-96">
-          {messages.reverse().map((msg, index) => (
-            <div key={index} className={`message ${msg.sender === 'user1' ? 'user1' : 'user2'}`}>
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
               <span className="font-bold">{msg.sender}</span>
               <span className="ml-2">{msg.message}</span>
             </div>
@@ -125,6 +141,10 @@ const ChatInterface = () => {
         <button onClick={handleNavigateToRooms} className="mt-4 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300">
           Go to Rooms
         </button>
+        <div>
+        <button onClick={handleDownloadJson} className="mt-4 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition duration-300">
+          Download Conversation JSON
+        </button></div>
       </div>
     </div>
   );
