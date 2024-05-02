@@ -40,6 +40,7 @@ const Profile = () => {
           </div>
           <div className="flex flex-col items-center md:items-start space-y-2">
             <h2 className="text-xl font-semibold">{username}</h2>
+            <h2 className="text-blue-600 text-l font-semibold">{localStorage.getItem('email')}</h2>
             <p className="text-gray-600">No subscription</p>
             <div className="flex space-x-4 mt-4">
               <button 

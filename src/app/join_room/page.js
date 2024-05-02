@@ -25,7 +25,12 @@ const JoinRoom = () => {
         setIsLoading(true);  // Set loading to true when submitting form
     
         try {
-            const response = await axios.post('https://chat-data-gen-server.onrender.com/api/join-room', roomData);
+            const response = await axios.post('https://chat-data-gen-server.onrender.com/api/join-room', roomData, {
+              headers: {
+                email: localStorage.getItem('email') // Assuming email is stored in localStorage
+              }
+            });
+            
             if (response.status === 200) {
                 localStorage.setItem('roomCode', roomCode);
                 localStorage.setItem('password', password);

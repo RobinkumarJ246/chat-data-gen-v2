@@ -59,7 +59,7 @@ const Register = () => {
                 <li>Download the dataset in desired format in seconds</li>
                 </ul>
                 </p>
-                <p>Its way more simpler than you think to make one</p>
+                <p>Its way simpler than you think to make one</p>
                 <p>The platform is still in beta development and can have bugs and errors, so please let us know your valuable feedback and suggestions that will greatly improve our solution.</p>
                 <p>We thank you once again for joining us in the early stage</p>
             </section>
