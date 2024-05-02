@@ -6,8 +6,11 @@ const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [onlineUsers, setOnlineUsers] = useState(0);
-  const roomCode = localStorage.getItem('roomCode');
-  const username = localStorage.getItem('username');
+  const roomCode = typeof window !== 'undefined' ? localStorage.getItem('roomCode') : null;
+  const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null;
+
+  //const roomCode = localStorage.getItem('roomCode');
+  //const username = localStorage.getItem('username');
 
   useEffect(() => {
     const ws = new WebSocket('wss://cdg-ws-python.onrender.com/ws'); //https://cdg-ws-python.onrender.com
