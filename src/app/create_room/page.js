@@ -108,7 +108,7 @@ const CreateRoom = () => {
                 </div>
                 {/* Radio buttons for role selection */}
                 <div className="mb-4">
-                    <label className="block text-gray-600">Register as:</label>
+                    <label className="block text-gray-600">Join as:</label>
                     <div className="flex items-center space-x-4">
                         <div>
                             <input
