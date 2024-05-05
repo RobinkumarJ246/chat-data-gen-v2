@@ -4,6 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+const getStoredValue = (key, defaultValue) => {
+  if (typeof window !== 'undefined') {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? storedValue : defaultValue;
+  }
+  return defaultValue;
+};
+
 const Profile = () => {
   const router = useRouter();
   const [username, setUsername] = useState('CDG USER');
@@ -14,9 +22,8 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    // Get the username and email from localStorage or use default values
-    const storedUsername = typeof window !== 'undefined' ? localStorage.getItem('username') || 'CDG USER' : 'CDG USER';
-    const storedEmail = typeof window !== 'undefined' ? localStorage.getItem('email') || '' : '';
+    const storedUsername = getStoredValue('username', 'CDG USER');
+    const storedEmail = getStoredValue('email', '');
 
     setUsername(storedUsername);
     setEmail(storedEmail);
