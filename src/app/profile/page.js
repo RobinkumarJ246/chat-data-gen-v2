@@ -1,23 +1,24 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'
+import Image from 'next/image';
 
 const Profile = () => {
   const router = useRouter();
+  const [username, setUsername] = useState('CDG USER');
+  const [email, setEmail] = useState('');
 
   const handleNavigateToHome = () => {
     router.push('/');
   };
 
-  const [username, setUsername] = useState('');
-
   useEffect(() => {
-    // Get the username from localStorage or default to empty string
-    const storedUsername = localStorage.getItem('username');
-    console.log(localStorage.getItem('username'))
-    console.log(localStorage.getItem('email'))
-    setUsername(storedUsername || 'CDG USER');
+    // Get the username and email from localStorage or use default values
+    const storedUsername = typeof window !== 'undefined' ? localStorage.getItem('username') || 'CDG USER' : 'CDG USER';
+    const storedEmail = typeof window !== 'undefined' ? localStorage.getItem('email') || '' : '';
+
+    setUsername(storedUsername);
+    setEmail(storedEmail);
   }, []);
 
   return (
