@@ -22,7 +22,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const storedUsername = getStoredValue('username', 'CDG USER');
+    const storedUsername = getStoredValue('userName', 'CDG USER');
     const storedEmail = getStoredValue('email', '');
 
     setUsername(storedUsername);
