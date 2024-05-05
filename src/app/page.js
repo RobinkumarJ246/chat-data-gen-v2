@@ -67,7 +67,7 @@ const Home = () => {
             <span className="ml-2">Manage Data</span>
           </div>
           {isLoggedIn && (
-            <Link href="/" className="flex items-center text-white">
+            <Link href="/profile" className="flex items-center text-white">
               <span className="text-2xl">&#9881;</span>
               <span className="ml-2">Profile</span>
             </Link>
