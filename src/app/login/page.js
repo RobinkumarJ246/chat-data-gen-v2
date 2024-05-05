@@ -40,7 +40,7 @@ const SignIn = () => {
       if (response.status === 200) {
         const userName = await fetchUsername(email);
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('username',userName)
+        localStorage.setItem('userName',userName)
         localStorage.setItem('email', email);
         console.log(localStorage.getItem('email'))  // Store email in localStorage
         router.push('/');
