@@ -22,6 +22,8 @@ const ChatRoom = () => {
         setMessages((prevMessages) => [...prevMessages, data.content]);
       } else if (data.type === 'userInfo') {
         setOnlineUsers({ onlineUsers: data.onlineUsers, onlineCount: data.onlineCount, sender: data.sender, replier: data.replier });
+      } else if (data.type === 'existingMessages') {
+        setMessages(data.messages);
       }
     };
     ws.onclose = (event) => {
