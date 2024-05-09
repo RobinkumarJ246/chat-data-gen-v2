@@ -21,7 +21,7 @@ const JoinRoom = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('https://chat-data-gen-server.onrender.com/api/join-room', roomData, {
+      const response = await axios.post('https://cdg-server-v2.onrender.com/api/join-room', roomData, {
         headers: {
           email: localStorage.getItem('email')
         }
