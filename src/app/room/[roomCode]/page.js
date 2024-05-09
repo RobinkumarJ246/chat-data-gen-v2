@@ -7,7 +7,7 @@ const ChatRoom = () => {
   const [newMessage, setNewMessage] = useState('');
   const [onlineUsers, setOnlineUsers] = useState({ onlineUsers: [], onlineCount: 0, sender: null, replier: null });
   const roomCode = typeof window !== 'undefined' ? localStorage.getItem('roomCode') : null;
-  const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null;
+  const username = typeof window !== 'undefined' ? localStorage.getItem('userName') : null;
   const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
 
   useEffect(() => {
