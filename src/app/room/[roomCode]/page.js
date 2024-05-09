@@ -19,11 +19,11 @@ const ChatRoom = () => {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === 'message') {
-        setMessages((prevMessages) => [...prevMessages, data.content]);
+        setMessages((prevMessages) => [...prevMessages, { content: data.content, username: data.username }]);
       } else if (data.type === 'userInfo') {
         setOnlineUsers({ onlineUsers: data.onlineUsers, onlineCount: data.onlineCount, sender: data.sender, replier: data.replier });
       } else if (data.type === 'existingMessages') {
-        setMessages(data.messages);
+        setMessages(data.messages.map(msg => ({ content: msg.content, username: msg.username })));
       }
     };
     ws.onclose = (event) => {
@@ -65,9 +65,10 @@ const ChatRoom = () => {
       </div>
       <div className="flex-grow p-4 overflow-y-auto">
         <div className="flex flex-col space-y-4">
-          {messages.map((msg, index) => (
+          {messages.map(({ content, username }, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow">
-              {msg}
+              <span className="font-bold">{username}: </span>
+              {content}
             </div>
           ))}
         </div>
