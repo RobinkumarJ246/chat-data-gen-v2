@@ -7,7 +7,7 @@ const ChatRoom = () => {
   const [newMessage, setNewMessage] = useState('');
   const [onlineUsers, setOnlineUsers] = useState({ onlineUsers: [], onlineCount: 0, sender: null, replier: null });
   const roomCode = typeof window !== 'undefined' ? localStorage.getItem('roomCode') : null;
-  const username = typeof window !== 'undefined' ? localStorage.getItem('userName') : null;
+  const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null;
   const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
 
   useEffect(() => {
@@ -22,6 +22,8 @@ const ChatRoom = () => {
         setMessages((prevMessages) => [...prevMessages, data.content]);
       } else if (data.type === 'userInfo') {
         setOnlineUsers({ onlineUsers: data.onlineUsers, onlineCount: data.onlineCount, sender: data.sender, replier: data.replier });
+      } else if (data.type === 'existingMessages') {
+        setMessages(data.messages);
       }
     };
     ws.onclose = (event) => {
