@@ -7,6 +7,7 @@ const ChatRoom = () => {
   const [newMessage, setNewMessage] = useState('');
   const [onlineUsers, setOnlineUsers] = useState({ onlineUsers: [], onlineCount: 0, sender: null, replier: null });
   const [showDownloadDialog, setShowDownloadDialog] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const roomCode = typeof window !== 'undefined' ? localStorage.getItem('roomCode') : null;
   const username = typeof window !== 'undefined' ? localStorage.getItem('userName') : null;
   const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
@@ -125,10 +126,22 @@ const ChatRoom = () => {
     <div className="flex flex-col h-screen bg-gray-100">
       <div className="flex items-center justify-between p-4 bg-white">
         <h1 className="text-2xl font-bold">Chat Room: {roomCode}</h1>
-        <div>
-          <p>Sender: {onlineUsers.sender}</p>
-          <p>Replier: {onlineUsers.replier}</p>
-          <p>Online Users: {onlineUsers.onlineCount}</p>
+        <div className="relative flex items-center">
+          <button
+            onClick={() => setShowMenu(!showMenu)}
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+          >
+            {showMenu ? 'Hide Menu' : 'Show Menu'}
+          </button>
+          {showMenu && (
+            <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
+              <div className="p-4">
+                <p>Sender: {onlineUsers.sender}</p>
+                <p>Replier: {onlineUsers.replier}</p>
+                <p>Online Users: {onlineUsers.onlineCount}</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex-grow p-4 overflow-y-auto">
@@ -155,63 +168,61 @@ const ChatRoom = () => {
         >
           Send
         </button>
-        <div className="relative">
-          <button
-            onClick={() => setShowDownloadDialog(true)}
-            className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600"
-          >
-            Download Chat
-          </button>
-          {showDownloadDialog && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-              <div className="bg-white rounded-lg p-8">
-                <button
-                  onClick={() => {
-                    setShowDownloadDialog(false);
-                    downloadMessages(true, 'json');
-                  }}
-                  className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
-                >
-                  Download as JSON with username
-                </button>
-                <button
-                  onClick={() => {
-                    setShowDownloadDialog(false);
-                    downloadMessages(false, 'json');
-                  }}
-                  className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
-                >
-                  Download as JSON without username
-                </button>
-                <button
-                  onClick={() => {
-                    setShowDownloadDialog(false);
-                    downloadMessages(true, 'csv');
-                  }}
-                  className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
-                >
-                  Download as CSV with username
-                </button>
-                <button
-                  onClick={() => {
-                    setShowDownloadDialog(false);
-                    downloadMessages(false, 'csv');
-                  }}
-                  className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
-                >
-                  Download as CSV without username
-                </button>
-                <button
-                  onClick={() => setShowDownloadDialog(false)}
-                  className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+        <button
+          onClick={() => setShowDownloadDialog(true)}
+          className="px-4 py-2 ml-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600"
+        >
+          Download Chat
+        </button>
       </div>
+      {showDownloadDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-white rounded-lg p-8">
+            <button
+              onClick={() => {
+                setShowDownloadDialog(false);
+                downloadMessages(true, 'json');
+              }}
+              className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
+            >
+              Download as JSON with username
+            </button>
+            <button
+              onClick={() => {
+                setShowDownloadDialog(false);
+                downloadMessages(false, 'json');
+              }}
+              className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
+            >
+              Download as JSON without username
+            </button>
+            <button
+              onClick={() => {
+                setShowDownloadDialog(false);
+                downloadMessages(true, 'csv');
+              }}
+              className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
+            >
+              Download as CSV with username
+            </button>
+            <button
+              onClick={() => {
+                setShowDownloadDialog(false);
+                downloadMessages(false, 'csv');
+              }}
+              className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200 mb-4"
+            >
+              Download as CSV without username
+            </button>
+            <button
+              onClick={() => setShowDownloadDialog(false)}
+              className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-200"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
