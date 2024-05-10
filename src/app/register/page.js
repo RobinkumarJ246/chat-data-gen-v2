@@ -203,6 +203,9 @@ const Register = () => {
             {isLoading ? 'Registering...' : 'Register'}
           </button>
         </form>
+        <Link href="/login" className=" w-full p-2 rounded-md block text-center mt-4 bg-blue-500 text-white hover:bg-blue-600 transition duration-300">
+          I already have an account
+        </Link>
         <Link href="/" className="block text-center mt-4 text-gray-600 hover:text-gray-700 transition duration-300">
           Back to Home
         </Link>

@@ -7,9 +7,9 @@ import Head from 'next/head';
 
 const Home = () => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   useEffect(() => {
     // Check if user is logged in from local storage
@@ -32,6 +32,20 @@ const Home = () => {
     setShowSideMenu(!showSideMenu);
   };
 
+  const handleGenerateData = () => {
+    if (!isLoggedIn) {
+      // If user is not logged in, show the login prompt
+      setShowLoginPrompt(true);
+    } else {
+      // Otherwise, proceed with generating data
+      router.push('/rooms');
+    }
+  };
+
+  const handleLogin = () => {
+    router.push('/login');
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <header className="bg-gray-800 text-white p-4">
@@ -46,6 +60,7 @@ const Home = () => {
           </button>
         </nav>
       </header>
+      {/* Side Menu */}
       <div
         className={`fixed top-0 right-0 h-screen w-64 bg-gray-800 text-white p-4 transition-transform transform ${
           showSideMenu ? 'translate-x-0' : 'translate-x-full'
@@ -58,10 +73,10 @@ const Home = () => {
           </button>
         </div>
         <div className="flex flex-col space-y-2">
-        <Link href="/rooms" className="flex items-center text-white cursor-pointer">
+          <div className="flex items-center text-white cursor-pointer" onClick={handleGenerateData}>
             <span className="text-2xl">&#128172;</span>
             <span className="ml-2">Generate Data</span>
-          </Link>
+          </div>
           <div className="flex items-center text-white">
             <span className="text-2xl">&#128228;</span>
             <span className="ml-2">Manage Data</span>
@@ -74,30 +89,29 @@ const Home = () => {
           )}
           {!isLoggedIn ? (
             <>
-              <Link href="/register" className="flex items-center text-white">
+              <div className="flex items-center text-white" onClick={handleLogin}>
                 <span className="text-2xl">&#128100;</span>
                 <span className="ml-2">Register</span>
-              </Link>
-              <Link href="/login" className="flex items-center text-white">
+              </div>
+              <div className="flex items-center text-white" onClick={handleLogin}>
                 <span className="text-2xl">&#128273;</span>
                 <span className="ml-2">Sign In</span>
-              </Link>
+              </div>
             </>
           ) : (
-            <Link href="/" onClick={handleLogout} className="flex items-center text-white">
+            <div className="flex items-center text-white" onClick={handleLogout}>
               <span className="text-2xl">&#128682;</span>
               <span className="ml-2">Logout</span>
-            </Link>
-            
-          )
-          }
-          <Link href = "/about" className="flex items-center text-white">
+            </div>
+          )}
+          <Link href="/about" className="flex items-center text-white">
             <span className="text-2xl">&#9432;</span>
             <span className="ml-2">About us</span>
           </Link>
         </div>
       </div>
       <main className="flex-1 p-4">
+        {/* Main Content */}
         <section className="text-center mb-8">
           <h1 className="text-4xl font-bold">Welcome to Chat Data Generator</h1>
           <h4 className="mb-4">Version: 1.1 (BETA)</h4>
@@ -122,6 +136,23 @@ const Home = () => {
         <p>&copy; 2024 Chat Data Generator. All rights reserved.</p>
         <p>For contact mail at innovatexcel.team@gmail.com</p>
       </footer>
+      {/* Login Prompt */}
+      {showLoginPrompt && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-white rounded-lg p-8">
+            <h2 className="text-2xl font-bold mb-4 text-red-500">Authentication required</h2>
+            <h4 className="text-xl font-normal mb-4">Please login to your account</h4>
+            <div className="flex justify-center">
+              <button onClick={() => setShowLoginPrompt(false)} className="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg mr-2 hover:bg-gray-600">
+                Close
+              </button>
+              <button onClick={handleLogin} className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
