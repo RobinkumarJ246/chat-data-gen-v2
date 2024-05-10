@@ -10,7 +10,8 @@ const CreateRoom = () => {
     const [roomName, setRoomName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false); // Added loading state
+    const [isLoading, setIsLoading] = useState(false);
+    const [role, setRole] = useState('Sender'); // Added role state
 
     const generateRoomCode = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -49,6 +50,7 @@ const CreateRoom = () => {
 
         const code = generateRoomCode();
         localStorage.setItem('roomCode', code);
+        localStorage.setItem('role', role); // Store the role in localStorage
         console.log(localStorage.getItem('roomCode'));  // Use localStorage to set the room code
 
         const roomData = {
@@ -104,7 +106,40 @@ const CreateRoom = () => {
                         className="w-full p-2 border rounded-md"
                     />
                 </div>
-                <button 
+                <div className="mb-4">
+                    <label className="block text-gray-600">Join as:</label>
+                    <div className="flex items-center space-x-4">
+                        <div>
+                            <input
+                                type="radio"
+                                id="senderRadio"
+                                name="role"
+                                value="Sender"
+                                checked={role === 'Sender'}
+                                onChange={() => setRole('Sender')}
+                                className="form-radio h-5 w-5 text-blue-500 transition duration-150 ease-in-out"
+                            />
+                            <label htmlFor="senderRadio" className="ml-2 text-gray-700">
+                                Sender
+                            </label>
+                        </div>
+                        <div>
+                            <input
+                                type="radio"
+                                id="replierRadio"
+                                name="role"
+                                value="Replier"
+                                checked={role === 'Replier'}
+                                onChange={() => setRole('Replier')}
+                                className="form-radio h-5 w-5 text-blue-500 transition duration-150 ease-in-out"
+                            />
+                            <label htmlFor="replierRadio" className="ml-2 text-gray-700">
+                                Replier
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button
                     className={`w-full p-2 rounded-md transition duration-300 ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
                     onClick={handleCreateRoom}
                     disabled={isLoading}
