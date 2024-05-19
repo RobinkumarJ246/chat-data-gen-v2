@@ -14,6 +14,7 @@ const getStoredValue = (key, defaultValue) => {
 
 const Profile = () => {
   const router = useRouter();
+  const [displayname, setDisplayname] = useState('CDG USER');
   const [username, setUsername] = useState('CDG USER');
   const [email, setEmail] = useState('');
 
@@ -22,9 +23,11 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const storedUsername = getStoredValue('userName', 'CDG USER');
+    const storedDisplayname = getStoredValue('displayName', 'CDG USER');
     const storedEmail = getStoredValue('email', '');
+    const storedUsername = getStoredValue('userName', 'cdguser');
 
+    setDisplayname(storedDisplayname);
     setUsername(storedUsername);
     setEmail(storedEmail);
   }, []);
@@ -38,8 +41,9 @@ const Profile = () => {
             <Image src="/avatar.jpg" layout="fill" objectFit="cover" alt="Profile Picture" priority sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 60vw" />
           </div>
           <div className="flex flex-col items-center md:items-start space-y-2">
-            <h2 className="text-xl font-semibold">{username}</h2>
-            <h2 className="text-blue-600 text-l font-semibold">{email}</h2>
+            <h2 className="text-xl font-semibold">{displayname}</h2>
+            <h2 className="text-blue-600 text-l font-semibold">@{username}</h2>
+            <h4 className="text-l text-gray-700 font-semibold">{email}</h4>
             <p className="text-gray-600">No subscription</p>
             <div className="flex space-x-4 mt-4">
               <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
