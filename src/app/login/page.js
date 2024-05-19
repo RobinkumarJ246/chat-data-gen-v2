@@ -29,6 +29,16 @@ const SignIn = () => {
     }
   };
 
+  const fetchDisplayname = async (email) => {
+    try {
+      const response = await axios.get(`https://cdg-server-v2.onrender.com/api/getDisplayname/${email}`);
+      return response.data.displayname;
+    } catch (err) {
+      console.error('Fetch displayname error:', err);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -39,10 +49,14 @@ const SignIn = () => {
 
       if (response.status === 200) {
         const userName = await fetchUsername(email);
+        const displayName = await fetchDisplayname(email);
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userName',userName)
         localStorage.setItem('email', email);
+        localStorage.setItem('displayName', displayName);
         console.log(localStorage.getItem('email'))  // Store email in localStorage
+        console.log(localStorage.getItem('userName'))  // Store email in localStorage
+        console.log(localStorage.getItem('displayName'))  // Store email in localStorage
         router.push('/');
       } else {
         setError(response.data.error || 'Login failed. Please try again later.');

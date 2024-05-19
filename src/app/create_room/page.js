@@ -8,6 +8,7 @@ import Link from 'next/link';
 const CreateRoom = () => {
     const router = useRouter();
     const [roomName, setRoomName] = useState('');
+    //const [topic, setTopic] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -106,6 +107,16 @@ const CreateRoom = () => {
                         className="w-full p-2 border rounded-md"
                     />
                 </div>
+                {/*}<div className="mb-4">
+                <label htmlFor="topic" className="block text-gray-600">Topic:</label>
+                    <input
+                        type="text"
+                        id="topic"
+                        value={topic}
+                        onChange={(e) => setTopic(e.target.value)}
+                        className="w-full p-2 border rounded-md"
+                    />
+                </div>{*/}
                 <div className="mb-4">
                     <label className="block text-gray-600">Join as:</label>
                     <div className="flex items-center space-x-4">

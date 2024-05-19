@@ -7,6 +7,7 @@ import Link from 'next/link';
 
 const Register = () => {
   const [formData, setFormData] = useState({
+    displayName: '',
     userName: '',
     email: '',
     password: '',
@@ -50,7 +51,7 @@ const Register = () => {
             </header>
             <!-- Content -->
             <section style="padding: 20px;">
-                <p>Hello ${formData.userName},</p>
+                <p>Hello ${formData.displayName},</p>
                 <p>Welcome to ChatDataGen! We're excited to have you on board.</p>
                 <p>This webapp is created to help data scientists and AI model engineers to craft conversational datasets using simpler steps.</p>
                 <p><ul>
@@ -103,6 +104,7 @@ const Register = () => {
         setSuccess('Registration successful. Redirecting for verification...');
         setIsLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('displayName', formData.displayName);
         localStorage.setItem('userName', formData.userName);
         localStorage.setItem('email', formData.email);
         
@@ -112,11 +114,11 @@ const Register = () => {
           router.push('/verify_email');
         }, 3000);
       } else {
-        alert(response.data.error || 'Registration is failed. Please try again later.');
+        alert(response.data.message || 'Registration failed. Please try again later.');
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        alert('Email already exists. Please login instead.');
+        alert(err.response.data.message);
       } else {
         console.error('Registration error:', err);
         alert('Registration failed. Please try again later.');
@@ -143,13 +145,14 @@ const Register = () => {
             </div>
           )}
 
+
           <div className="mb-4">
-            <label htmlFor="email" className="block font-semibold text-gray-600">Email</label>
+            <label htmlFor="displayName" className="block font-semibold text-gray-600">Display Name</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              id="displayName"
+              name="displayName"
+              value={formData.displayName}
               onChange={handleChange}
               required
               className="w-full p-2 border rounded-md"
@@ -157,17 +160,33 @@ const Register = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="userName" className="block font-semibold text-gray-600">User Name</label>
+            <label htmlFor="userName" className="block font-semibold text-gray-600">Username</label>
             <input
               type="text"
               id="userName"
               name="userName"
+              placeholder='Example: Tomato34'
               value={formData.userName}
               onChange={handleChange}
               required
               className="w-full p-2 border rounded-md"
             />
           </div>
+
+          <div className="mb-4">
+            <label htmlFor="email" className="block font-semibold text-gray-600">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder='example@domain.com'
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
+
 
           <div className="mb-4">
             <label htmlFor="password" className="block font-semibold text-gray-600">Password</label>

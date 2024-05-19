@@ -84,19 +84,20 @@ const Home = () => {
           {isLoggedIn && (
             <Link href="/profile" className="flex items-center text-white">
               <span className="text-2xl">&#9881;</span>
-              <span className="ml-2">Profile</span>
+              <span className="ml-2">Settings</span>
             </Link>
           )}
           {!isLoggedIn ? (
             <>
-              <div className="flex items-center text-white" onClick={handleLogin}>
-                <span className="text-2xl">&#128100;</span>
-                <span className="ml-2">Register</span>
-              </div>
-              <div className="flex items-center text-white" onClick={handleLogin}>
-                <span className="text-2xl">&#128273;</span>
-                <span className="ml-2">Sign In</span>
-              </div>
+            <Link href="/register" className="flex items-center text-white">
+            <span className="text-2xl">&#128100;</span>
+            <span className="ml-2">Register</span>
+          </Link>
+          <Link href="/login" className="flex items-center text-white">
+            <span className="text-2xl">&#128273;</span>
+            <span className="ml-2">Login</span>
+          </Link>
+              
             </>
           ) : (
             <div className="flex items-center text-white" onClick={handleLogout}>
@@ -106,7 +107,7 @@ const Home = () => {
           )}
           <Link href="/about" className="flex items-center text-white">
             <span className="text-2xl">&#9432;</span>
-            <span className="ml-2">About us</span>
+            <span className="ml-2">About</span>
           </Link>
         </div>
       </div>
