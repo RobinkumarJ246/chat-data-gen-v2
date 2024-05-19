@@ -17,6 +17,15 @@ const Profile = () => {
   const [displayname, setDisplayname] = useState('CDG USER');
   const [username, setUsername] = useState('CDG USER');
   const [email, setEmail] = useState('');
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+
+  const achievements = [
+    {
+      badge: '/achievements/room_owner.png',
+      name: 'Room owner',
+      description: 'Awarded for creating your very first room.'
+    }
+  ];
 
   const handleNavigateToHome = () => {
     router.push('/');
@@ -31,6 +40,14 @@ const Profile = () => {
     setUsername(storedUsername);
     setEmail(storedEmail);
   }, []);
+
+  const handleAchievementClick = (achievement) => {
+    setSelectedAchievement(achievement);
+  };
+
+  const closeDialog = () => {
+    setSelectedAchievement(null);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -55,6 +72,24 @@ const Profile = () => {
             </div>
           </div>
         </div>
+        {/* Achievements Section */}
+        <div className="bg-white mt-8 p-6 rounded-md shadow-md w-full">
+          <h3 className="text-lg font-semibold mb-4">Achievements</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {achievements.map((achievement, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => handleAchievementClick(achievement)}
+              >
+                <div className="relative w-24 h-24 md:w-32 md:h-32">
+                  <Image src={achievement.badge} layout="fill" objectFit="cover" alt={achievement.name} />
+                </div>
+                <p className="text-center mt-2 text-sm md:text-md font-semibold">{achievement.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         {/* Additional User Details */}
         <div className="bg-white mt-8 p-6 rounded-md shadow-md w-full">
           <h3 className="text-lg font-semibold mb-4">Danger Zone</h3>
@@ -75,6 +110,21 @@ const Profile = () => {
           Go to Home
         </button>
       </div>
+      {/* Achievement Dialog */}
+      {selectedAchievement && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-md max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">{selectedAchievement.name}</h3>
+            <p className="mb-4">{selectedAchievement.description}</p>
+            <button
+              onClick={closeDialog}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
