@@ -140,6 +140,14 @@ const ChatRoom = () => {
                 <p>Replier: {onlineUsers.replier}</p>
                 <p>Online Users: {onlineUsers.onlineCount}</p>
               </div>
+              <div className="mb-4">
+              <button
+          onClick={() => setShowDownloadDialog(true)}
+          className="px-4 py-2 ml-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600"
+        >
+          Download Chat
+        </button>
+        </div>
             </div>
           )}
         </div>
@@ -168,12 +176,12 @@ const ChatRoom = () => {
         >
           Send
         </button>
-        <button
+        {/*}<button
           onClick={() => setShowDownloadDialog(true)}
           className="px-4 py-2 ml-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600"
         >
           Download Chat
-        </button>
+        </button>{*/}
       </div>
       {showDownloadDialog && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
