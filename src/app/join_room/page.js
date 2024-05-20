@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import Link from 'next/link';
 
 const JoinRoom = () => {
   const router = useRouter();
@@ -125,6 +126,9 @@ const JoinRoom = () => {
         >
           {isLoading ? 'Joining...' : 'Join Room'}
         </button>
+        <Link href="/" className="block text-center mt-4 text-gray-600 hover:text-gray-700 transition duration-300">
+          Back to Home
+        </Link>
       </div>
     </div>
   );

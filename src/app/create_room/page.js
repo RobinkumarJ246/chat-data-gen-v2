@@ -157,6 +157,9 @@ const CreateRoom = () => {
                 >
                     {isLoading ? 'Creating...' : 'Create Room'}
                 </button>
+                <Link href="/" className="block text-center mt-4 text-gray-600 hover:text-gray-700 transition duration-300">
+          Back to Home
+        </Link>
             </div>
         </div>
     );
