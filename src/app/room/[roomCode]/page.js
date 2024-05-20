@@ -142,7 +142,10 @@ const ChatRoom = () => {
               </div>
               <div className="mb-4">
               <button
-          onClick={() => setShowDownloadDialog(true)}
+          onClick={() => {
+          setShowDownloadDialog(true);
+          setShowMenu(false); // Close the menu
+        }}
           className="px-4 py-2 ml-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600"
         >
           Download Chat
