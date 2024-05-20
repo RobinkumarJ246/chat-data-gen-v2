@@ -24,6 +24,11 @@ const Profile = () => {
       badge: '/achievements/room_owner.png',
       name: 'Room owner',
       description: 'Awarded for creating your very first room.'
+    },
+    {
+      badge: '/achievements/first_wordsmith.png',
+      name: 'Room owner',
+      description: 'Awarded for chatting in the room for the first time.'
     }
   ];
 
@@ -75,11 +80,11 @@ const Profile = () => {
         {/* Achievements Section */}
         <div className="bg-white mt-8 p-6 rounded-md shadow-md w-full">
           <h3 className="text-lg font-semibold mb-4">Achievements</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="max-h-72 overflow-y-auto">
             {achievements.map((achievement, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center cursor-pointer"
+                className="flex flex-col items-center cursor-pointer mb-4"
                 onClick={() => handleAchievementClick(achievement)}
               >
                 <div className="relative w-24 h-24 md:w-32 md:h-32">
