@@ -13,7 +13,7 @@ const ChatRoom = () => {
   const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
 
   useEffect(() => {
-    const ws = new WebSocket('wss://cdg-ws-python.onrender.com/ws');
+    const ws = new WebSocket('wss://cdg-ws-python-539h.onrender.com/ws');
     ws.onopen = () => {
       console.log('WebSocket connection established');
       ws.send(JSON.stringify({ roomCode, username, role }));
