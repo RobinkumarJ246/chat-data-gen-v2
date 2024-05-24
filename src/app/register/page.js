@@ -34,7 +34,7 @@ const Register = () => {
 
   const sendWelcomeEmail = async () => {
     try {
-      const emailResponse = await axios.post('https://cdg-server-v2.onrender.com/api/welcome-mail', {
+      const emailResponse = await axios.post('https://cdg-server-vercel.onrender.com/api/welcome-mail', {
         toEmail: formData.email,
         subject: 'Account creation success',
         htmlContent: `
