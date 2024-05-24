@@ -31,7 +31,7 @@ const SignIn = () => {
 
   const fetchDisplayname = async (email) => {
     try {
-      const response = await axios.get(`https://cdg-server-v2.onrender.com/api/getDisplayname/${email}`);
+      const response = await axios.get(`https://cdg-server-vercel.onrender.com/api/getDisplayname/${email}`);
       return response.data.displayname;
     } catch (err) {
       console.error('Fetch displayname error:', err);
@@ -45,7 +45,7 @@ const SignIn = () => {
     setError(null);
 
     try {
-      const response = await axios.post('https://cdg-server-v2.onrender.com/api/login', { email, password });
+      const response = await axios.post('https://cdg-server-vercel.onrender.com/api/login', { email, password });
 
       if (response.status === 200) {
         const userName = await fetchUsername(email);
