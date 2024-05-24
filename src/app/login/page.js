@@ -21,7 +21,7 @@ const SignIn = () => {
 
   const fetchUsername = async (email) => {
     try {
-      const response = await axios.get(`https://cdg-server-v2.onrender.com/api/getUsername/${email}`);
+      const response = await axios.get(`https://cdg-server-vercel.onrender.com/api/getUsername/${email}`);
       return response.data.username;
     } catch (err) {
       console.error('Fetch username error:', err);

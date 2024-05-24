@@ -24,7 +24,7 @@ const VerifyEmail = () => {
     const email = localStorage.getItem('email'); // Get the email from local storage
 
     try {
-      const response = await axios.post('https://cdg-server-v2.onrender.com/api/validate-verification-code', { email, code: verificationCode.toString() });
+      const response = await axios.post('https://cdg-server-vercel.onrender.com/api/validate-verification-code', { email, code: verificationCode.toString() });
 
       if (response.status === 200) {
         // Update the 'verifiedEmail' field to true in the 'auth' collection

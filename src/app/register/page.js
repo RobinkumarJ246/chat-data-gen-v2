@@ -98,7 +98,7 @@ const Register = () => {
     }
   
     try {
-      const response = await axios.post('https://cdg-server-v2.onrender.com/api/register', formData);
+      const response = await axios.post('https://cdg-server-vercel.onrender.com/api/register', formData);
   
       if (response.status === 200) {
         setSuccess('Registration successful. Redirecting for verification...');
