@@ -62,7 +62,7 @@ const CreateRoom = () => {
         };
 
         try {
-            const response = await axios.post('https://cdg-server-v2.onrender.com/api/save-room', roomData);
+            const response = await axios.post('https://cdg-server-vercel.onrender.com/api/save-room', roomData);
             if (response.status === 200) {
                 console.log(`Room Code: ${code}`);
                 router.push(`/room/${encodeURIComponent(code)}`);  // Navigate to the created room page
