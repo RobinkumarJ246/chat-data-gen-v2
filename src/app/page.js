@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
+import Script from 'next/script';
 
 const Home = () => {
   const router = useRouter();
@@ -113,6 +114,12 @@ const Home = () => {
       </div>
       <main className="flex-1 p-4">
         {/* Main Content */}
+            <section>
+        <Script
+        src="https://deflekt.ai/webbot/9cb9a73d-2739-4ff3-976e-ff9e339994bf/embed.js"
+        strategy="lazyOnload"
+      />
+        </section>
         <section className="text-center mb-8">
           <h1 className="text-4xl font-bold">Welcome to Chat Data Generator</h1>
           <h4 className="mb-4">Version: 1.1 (BETA)</h4>
